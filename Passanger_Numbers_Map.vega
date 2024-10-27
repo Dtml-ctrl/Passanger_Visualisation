@@ -1,0 +1,92 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width":800,
+    "height":400,
+    "title": "Number of passanger entries per station in the state of Victoria",
+    "projection":{
+        "type": "equirectangular"
+
+
+    },
+    "layer": [
+        {
+            "data": {
+                "url": "Victorian_Rail_Network.json",
+                "format": {"type": "topojson","feature":"vic_lga"}
+            },
+            "mark": {"type": "geoshape","fill":"darkgray","stroke":"black"}
+        },
+        {
+            "data": {
+                "url": "Victorian_Rail_Network.json",
+                "format": {"type": "topojson","feature":"VIC_RAILWAY_CORRIDOR"}
+            },
+            "mark": {"type": "geoshape","fill":null,"stroke":"blue"}
+        },
+        {
+            "data": { 
+                "url": "Annual_Metropolitan_Train_Station_Entries_2023-24_Simplified.csv",
+                "format": {"type": "csv"}
+            },
+            "mark": {
+                "type":"circle","color":"blue","opacity":0.7
+            },
+            "projection": {
+                "type":"equirectangular"
+            },
+            "encoding": {
+                "longitude": {"field": "Stop_long","type":"quantitative"},
+                "latitude": {"field": "Stop_lat","type":"quantitative"},
+                "size": {
+                    "field": "Pax_annual",
+                    "type": "quantitative",
+                    "title": "Passanger Numbers",
+                    "scale": {
+                        "type": "threshold",
+                        "domain": [10000,100000,500000,1000000,5000000],
+                        "range":[15,45,75,105,195]
+                    },
+                    "legend": {"format": ".1s"} 
+                },
+                "tooltip":  [
+                    {"field": "Stop_name", "type": "nominal", "title":"Station"},
+                    {"field": "Pax_annual", "type": "quantitative", "format":".4s"}
+                ]
+            }
+    
+        }
+    
+        ,{
+            "data": {
+                "url": "Annual_Regional_Train_Station_Entries_2023-24.csv",
+                "format": {"type": "csv"}
+            },
+            "mark": {"type":"circle","color":"purple","opacity":0.7},
+            "encoding": {
+                "longitude": {"field": "Stop_long","type":"quantitative"},
+                "latitude": {"field": "Stop_lat","type":"quantitative"},
+                "size": {
+                    "field": "Pax_annual",
+                    "type": "quantitative",
+                    "title": "Passanger Numbers",
+                    "scale": {
+                        "type":"threshold",
+                        "domain": [10000,100000,500000,1000000,5000000],
+                        "range":[20,60,100,140,200]
+                    }
+                },
+                "tooltip": [
+                    {"field": "Stop_name", "type": "nominal"},
+                    {"field": "Pax_annual", "type": "quantitative", "format":".4s"}
+                ]
+  
+             }
+         }
+    
+        
+    
+    
+    ]
+    
+    
+    }
